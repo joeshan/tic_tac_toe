@@ -1,4 +1,3 @@
-# modules
 def print_board(l):
     print('\n')
     print('%s|%s|%s'%(l['7'],l['8'],l['9']))
@@ -21,36 +20,40 @@ def player_move(p, board, player_positions):
         else:
             print('Wrong position!\n')
 
-def check_win(p, win_cases, player_positions, win):
-    if set(player_positions[p]) in win_cases:
-        win[0] = 1
-        print('Play %s won!\n'%p)
+def check_win(p, win_cases, player_positions):
+    global win
+    for case in win_cases:
+        if case[0] in player_positions[p] and case[1] in player_positions[p] and case[2] in player_positions[p]:
+            win = 1
+            print('Play %s won!\n'%p)
+            break
             
 # main function            
 def tic_tac_toe():
+    global win
     play_or_not = 'Y'
-    win_cases = [{1,2,3},{4,5,6},{7,8,9},{1,4,7},{2,5,8},{3,6,9},{7,5,3},{1,5,9}]
+    win_cases = [[1,2,3],[4,5,6],[7,8,9],[1,4,7],[2,5,8],[3,6,9],[7,5,3],[1,5,9]]
     while play_or_not == 'Y':
         # initialization
         board = {'7':' ','8':' ','9':' ','4':' ','5':' ','6':' ','1':' ','2':' ','3':' '}
         player_positions = {'x':[],'o':[]}
         print_board(board)
-        win = [0]
-        blank = [' ']
+        win = 0
+        blank = ' '
         
-        while win[0] == 0 and blank[0] in list(board.values()):
+        while win == 0 and blank[0] in list(board.values()):
             
             # play x's input
             player_move('x', board, player_positions)
             print_board(board)
             
             # check if someone wins
-            check_win('x', win_cases, player_positions, win)
-            if win[0] == 1:
+            check_win('x', win_cases, player_positions)
+            if win == 1:
                 break
                 
             # check if no one wins
-            if blank[0] not in list(board.values()):
+            if blank not in list(board.values()):
                 print('Draw!\n')
                 break
         
@@ -59,12 +62,12 @@ def tic_tac_toe():
             print_board(board)
                   
             # check if someone wins
-            check_win('o', win_cases, player_positions, win)
-            if win[0] == 1:
+            check_win('o', win_cases, player_positions)
+            if win == 1:
                 break
             
             # check if no one wins
-            if blank[0] not in list(board.values()):
+            if blank not in list(board.values()):
                 print('Draw!\n')
                 break
         
@@ -74,5 +77,3 @@ def tic_tac_toe():
         
 # call the main function to play
 tic_tac_toe()
-
-
